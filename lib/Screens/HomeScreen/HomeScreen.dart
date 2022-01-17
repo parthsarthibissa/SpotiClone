@@ -18,9 +18,11 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         key: scaffoldState,
         bottomNavigationBar: BottomAppBar(
+            color: Colors.transparent,
+            elevation: 10,
             child: BottomPlayBar(
-          sc: scaffoldState,
-        )),
+              sc: scaffoldState,
+            )),
         backgroundColor: Colors.black,
         body: Column(
           children: [

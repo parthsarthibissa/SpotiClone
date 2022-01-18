@@ -13,14 +13,30 @@ class BottomPlayBar extends StatefulWidget {
   State<BottomPlayBar> createState() => _BottomPlayBarState();
 }
 
-class _BottomPlayBarState extends State<BottomPlayBar> {
+class _BottomPlayBarState extends State<BottomPlayBar>
+    with SingleTickerProviderStateMixin {
   bool showFab = true;
   bool showQueue = false;
+  AnimationController? animationController;
+  Animation<Color?>? animation;
+  bool? liked;
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animation = ColorTween(begin: Colors.grey, end: Colors.red)
+        .animate(animationController!);
+    animation!.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return showFab == true
         ? AnimatedContainer(
-            height: showFab ? 100 : MediaQuery.of(context).size.height / 1.5,
+            height: showFab ? 100 : 400,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -175,61 +191,64 @@ class _BottomPlayBarState extends State<BottomPlayBar> {
                     ],
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          margin: EdgeInsets.symmetric(vertical: 30),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/moosetape.jpg'))),
-                        ),
-                        Text(
-                          'Moosetape',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: ApplicationColors.white),
-                        ),
-                      ],
+
+                Align(
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () {
+                      animationController!.forward();
+                    },
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              width: 0.5, color: ApplicationColors.mainGreen),
+                          image: DecorationImage(
+                              image:
+                                  AssetImage('assets/images/moosetape.jpg'))),
                     ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      height: 150,
-                      width: 200,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              'ਦੱਸ ਪੁੱਤ ਤੇਰਾ head down ਕਾਸਤੋ ਚੰਗਾ ਭਲਾ ਹੱਸਦਾ ਸੀ ਮੌਨ ਕਾਸਤੋ ਆ ਜਿਹੜੇ ਦਰਵਾਜੇ ਵਿਚ board ਚੱਕੀ ਖੜੇ ਆ ਮੈਂ ਚੰਗੀ ਤਰਹ ਜਾਂਦਾ ਆ ਕੌਣ ਕਾਸਤੋ ਕੁਛ ਐਥੇ ਚਾਂਦੀ ਚਮਕੌਂਨਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਤੈਨੂ ਫਡ ਥੱਲੇ ਲੌਣਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਕ਼ ਨੇ ਆਏ ਐਥੇ ਭੁੱਖੇ fame ਦੇਨਾਮ ਲੈਕੇ ਤੇਰਾ ਅੱਗੇ ਔਣੇ ਚੌਂਦੇ ਨੇ ਮੁਸੀਬਤ ਤਾਂ ਮਰਦਾ ਤੇ ਪੈਂਦੀ ਰਿਹੰਦੀ ਏ ਦਬੀ ਨਾ ਤੂ ਦੁਨਿਯਾ ਸਵਾਦ ਲੈਂਦੀ ਏ',
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(0.85),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+
+                Text(
+                  'Moosetape',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: ApplicationColors.white),
+                ),
+
+                // SizedBox(
+                //   width: 40,
+                // ),
+                // Container(
+                //   height: 150,
+                //   width: 200,
+                //   padding:
+                //       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                //   margin: EdgeInsets.symmetric(horizontal: 5),
+                //   child: SingleChildScrollView(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.end,
+                //       children: [
+                //         SizedBox(
+                //           height: 20,
+                //         ),
+                //         Text(
+                //           'ਦੱਸ ਪੁੱਤ ਤੇਰਾ head down ਕਾਸਤੋ ਚੰਗਾ ਭਲਾ ਹੱਸਦਾ ਸੀ ਮੌਨ ਕਾਸਤੋ ਆ ਜਿਹੜੇ ਦਰਵਾਜੇ ਵਿਚ board ਚੱਕੀ ਖੜੇ ਆ ਮੈਂ ਚੰਗੀ ਤਰਹ ਜਾਂਦਾ ਆ ਕੌਣ ਕਾਸਤੋ ਕੁਛ ਐਥੇ ਚਾਂਦੀ ਚਮਕੌਂਨਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਤੈਨੂ ਫਡ ਥੱਲੇ ਲੌਣਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਕ਼ ਨੇ ਆਏ ਐਥੇ ਭੁੱਖੇ fame ਦੇਨਾਮ ਲੈਕੇ ਤੇਰਾ ਅੱਗੇ ਔਣੇ ਚੌਂਦੇ ਨੇ ਮੁਸੀਬਤ ਤਾਂ ਮਰਦਾ ਤੇ ਪੈਂਦੀ ਰਿਹੰਦੀ ਏ ਦਬੀ ਨਾ ਤੂ ਦੁਨਿਯਾ ਸਵਾਦ ਲੈਂਦੀ ਏ',
+                //           style: TextStyle(
+                //               color: Colors.white.withOpacity(0.85),
+                //               fontSize: 18,
+                //               fontWeight: FontWeight.w600),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+
                 Row(
                   children: [
                     Text(
@@ -245,10 +264,31 @@ class _BottomPlayBarState extends State<BottomPlayBar> {
                       color: Colors.blue,
                     ),
                     Spacer(),
-                    Icon(
-                      FontAwesomeIcons.heart,
-                      size: 18,
-                      color: ApplicationColors.mainGreen,
+                    InkWell(
+                      onTap: () {
+                        if (liked == true) {
+                          animationController!.forward();
+                          setState(() {
+                            liked = false;
+                          });
+                        } else {
+                          animationController!.reverse();
+                          setState(() {
+                            liked = true;
+                          });
+                        }
+                      },
+                      child: liked == false
+                          ? Icon(
+                              FontAwesomeIcons.solidHeart,
+                              size: 22,
+                              color: animation!.value,
+                            )
+                          : Icon(
+                              FontAwesomeIcons.heart,
+                              size: 22,
+                              color: animation!.value,
+                            ),
                     ),
                   ],
                 ),

@@ -28,6 +28,9 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion flutter.compileSdkVersion
 
+    
+
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -58,11 +61,17 @@ android {
         }
     }
 }
+android {
+  lintOptions {
+    checkReleaseBuilds false
+  }
+}
 
 flutter {
     source '../..'
 }
 
 dependencies {
+    implementation project(':spotify-app-remote')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

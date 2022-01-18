@@ -15,5 +15,10 @@ import io.flutter.embedding.engine.FlutterEngine;
 public final class GeneratedPluginRegistrant {
   private static final String TAG = "GeneratedPluginRegistrant";
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
+    try {
+      flutterEngine.getPlugins().add(new de.minimalme.spotify_sdk.SpotifySdkPlugin());
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin spotify_sdk, de.minimalme.spotify_sdk.SpotifySdkPlugin", e);
+    }
   }
 }

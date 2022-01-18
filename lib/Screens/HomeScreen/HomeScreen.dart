@@ -6,11 +6,29 @@ import 'package:spoticlone/Screens/Elements/AppBar/CustomAppBar.dart';
 import 'package:spoticlone/Screens/Elements/BottomNavigationBar/CustomBottomNavigationBar.dart';
 import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/Recents.dart';
+import 'package:spotify_sdk/spotify_sdk.dart';
 
 final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    getSpotifySetup();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  getSpotifySetup() async {
+    await SpotifySdk.connectToSpotifyRemote(
+        clientId: '466b7b09bfdd4ddbab9992ed2bb37220', redirectUrl: '');
+  }
 
   @override
   Widget build(BuildContext context) {

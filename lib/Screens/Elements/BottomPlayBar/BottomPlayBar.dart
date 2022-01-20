@@ -1,13 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
 
 class BottomPlayBar extends StatefulWidget {
   final GlobalKey<ScaffoldState>? sc;
-  BottomPlayBar({this.sc});
+  bool? isPlaying;
+  final String? trackName;
+  final String? artists;
+  final String? url;
+
+  BottomPlayBar({this.sc, this.url,this.artists, this.isPlaying, this.trackName});
 
   @override
   State<BottomPlayBar> createState() => _BottomPlayBarState();
@@ -46,7 +52,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                     colorFilter: ColorFilter.mode(
                         ApplicationColors.mainBlack.withOpacity(0.5),
                         BlendMode.darken),
-                    image: AssetImage('assets/images/moosetape.jpg'))),
+                    image: NetworkImage(widget.url!))),
             curve: Curves.easeIn,
             duration: Duration(milliseconds: 450),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -58,13 +64,16 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                      width: 140,
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Moosetape',
+                            widget.trackName!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -74,7 +83,9 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             height: 4,
                           ),
                           Text(
-                            'Sidhu Moose Wala',
+                            widget.artists!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -97,10 +108,18 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                           SizedBox(
                             width: 10,
                           ),
-                          Icon(
-                            Icons.play_arrow_rounded,
-                            color: ApplicationColors.white,
-                            size: 30,
+                          InkWell(
+                            onTap: () async {},
+                            child: widget.isPlaying == true
+                                ? Icon(
+                                    Icons.pause,
+                                    color: ApplicationColors.white,
+                                  )
+                                : Icon(
+                                    Icons.play_arrow_rounded,
+                                    color: ApplicationColors.white,
+                                    size: 30,
+                                  ),
                           ),
                           SizedBox(
                             width: 10,
@@ -149,7 +168,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             ? ApplicationColors.mainBlack.withOpacity(0.8)
                             : ApplicationColors.mainBlack.withOpacity(0.5),
                         BlendMode.darken),
-                    image: AssetImage('assets/images/moosetape.jpg'))),
+                    image: NetworkImage(widget.url!))),
             curve: Curves.easeIn,
             duration: Duration(milliseconds: 350),
             child: Column(
@@ -208,13 +227,15 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                               width: 0.5, color: ApplicationColors.mainGreen),
                           image: DecorationImage(
                               image:
-                                  AssetImage('assets/images/moosetape.jpg'))),
+                                  NetworkImage(widget.url!))),
                     ),
                   ),
                 ),
 
                 Text(
-                  'Moosetape',
+                  widget.trackName!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -252,7 +273,9 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                 Row(
                   children: [
                     Text(
-                      'Sidhu Moose Wala ',
+                      widget.artists!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w300,
@@ -385,11 +408,16 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                     SizedBox(
                       width: 10,
                     ),
-                    Icon(
-                      Icons.play_arrow_rounded,
-                      color: ApplicationColors.white,
-                      size: 30,
-                    ),
+                    widget.isPlaying == true
+                        ? Icon(
+                            Icons.pause,
+                            color: ApplicationColors.white,
+                          )
+                        : Icon(
+                            Icons.play_arrow_rounded,
+                            color: ApplicationColors.white,
+                            size: 30,
+                          ),
                     SizedBox(
                       width: 10,
                     ),
@@ -429,8 +457,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/moosetape.jpg'))),
+                                    image: NetworkImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -469,8 +496,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/moosetape.jpg'))),
+                                    image: NetworkImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -509,8 +535,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/moosetape.jpg'))),
+                                    image: NetworkImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -549,8 +574,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/moosetape.jpg'))),
+                                    image: NetworkImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -589,8 +613,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/moosetape.jpg'))),
+                                    image: NetworkImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',

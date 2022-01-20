@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
 import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 
@@ -7,6 +8,7 @@ void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: MainScreen(),
+    builder: EasyLoading.init(),
     navigatorKey: navigatorKey,
   ));
 }

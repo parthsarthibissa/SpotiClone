@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,9 +13,10 @@ class BottomPlayBar extends StatefulWidget {
   bool? isPlaying;
   final String? trackName;
   final String? artists;
-  final String? url;
+  final Uint8List? url;
 
-  BottomPlayBar({this.sc, this.url,this.artists, this.isPlaying, this.trackName});
+  BottomPlayBar(
+      {this.sc, this.url, this.artists, this.isPlaying, this.trackName});
 
   @override
   State<BottomPlayBar> createState() => _BottomPlayBarState();
@@ -52,7 +55,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                     colorFilter: ColorFilter.mode(
                         ApplicationColors.mainBlack.withOpacity(0.5),
                         BlendMode.darken),
-                    image: NetworkImage(widget.url!))),
+                    image: MemoryImage(widget.url!))),
             curve: Curves.easeIn,
             duration: Duration(milliseconds: 450),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -168,7 +171,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             ? ApplicationColors.mainBlack.withOpacity(0.8)
                             : ApplicationColors.mainBlack.withOpacity(0.5),
                         BlendMode.darken),
-                    image: NetworkImage(widget.url!))),
+                    image: MemoryImage(widget.url!))),
             curve: Curves.easeIn,
             duration: Duration(milliseconds: 350),
             child: Column(
@@ -225,9 +228,8 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                           shape: BoxShape.circle,
                           border: Border.all(
                               width: 0.5, color: ApplicationColors.mainGreen),
-                          image: DecorationImage(
-                              image:
-                                  NetworkImage(widget.url!))),
+                          image:
+                              DecorationImage(image: MemoryImage(widget.url!))),
                     ),
                   ),
                 ),
@@ -457,7 +459,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(widget.url!))),
+                                    image: MemoryImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -496,7 +498,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(widget.url!))),
+                                    image: MemoryImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -535,7 +537,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(widget.url!))),
+                                    image: MemoryImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -574,7 +576,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(widget.url!))),
+                                    image: MemoryImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',
@@ -613,7 +615,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             width: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(widget.url!))),
+                                    image: MemoryImage(widget.url!))),
                           ),
                           title: Text(
                             'Moosetape',

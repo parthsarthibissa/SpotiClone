@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
@@ -8,7 +9,9 @@ import 'package:spotify_sdk/spotify_sdk.dart';
 
 class PlaybackDataController extends GetxController {
   var isLoading = true.obs;
-  Uint8List? playerImage;
+  String? trackName = ''.obs.toString();
+  String? artistName = ''.obs.toString();
+  bool? isPaused;
   PlayerState? playbackData;
 
   @override
@@ -22,11 +25,15 @@ class PlaybackDataController extends GetxController {
     try {
       isLoading(true);
       var data = await SpotifySpecificServices().getCurrentPlayingState(true);
+     
       if (data != null) {
         playbackData = data;
-        playerImage = await SpotifySdk.getImage(
-            imageUri: data.track!.imageUri, dimension: ImageDimension.medium);
+        artistName = data.track!.artist.name;
+        trackName = data.track!.name;
+        isPaused = data.isPaused;
       }
+    } catch (e) {
+      print(e.toString());
     } finally {
       isLoading(false);
     }

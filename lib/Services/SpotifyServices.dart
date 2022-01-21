@@ -7,7 +7,6 @@ import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
 class SpotifySpecificServices {
-  SpotifySdk spotifySdk = SpotifySdk();
   Future<PlayerState> getCurrentPlayingState(bool? showLoading) async {
     if (showLoading == true) {
       EasyLoading.show(
@@ -19,6 +18,6 @@ class SpotifySpecificServices {
     }
     final response = await SpotifySdk.getPlayerState();
     EasyLoading.dismiss();
-    return response!;
+     return response!;
   }
 }

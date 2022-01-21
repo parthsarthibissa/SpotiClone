@@ -29,13 +29,16 @@ environment:
 dependencies:
   cached_network_image: ^3.2.0
   cupertino_icons: ^1.0.2
+  external_app_launcher: ^2.0.2
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.3
+  fluttertoast: ^8.0.8
   font_awesome_flutter: ^9.2.0
   get: ^4.6.1
   http: ^0.13.4
   persistent_bottom_nav_bar: ^4.0.2
+  shared_preferences: ^2.0.12
   spotify_sdk: ^2.2.0
 
 dev_dependencies:

@@ -9,6 +9,9 @@ import 'package:spoticlone/Screens/LibraryScreen/LibraryScreen.dart';
 import 'package:spoticlone/Screens/SearchScreen/SearchScreen.dart';
 
 class MainScreen extends StatelessWidget {
+  final String? authToken;
+  MainScreen({required this.authToken});
+
   final PersistentTabController persistentTabController =
       PersistentTabController();
   @override
@@ -17,7 +20,9 @@ class MainScreen extends StatelessWidget {
         child: PersistentTabView(
       context,
       backgroundColor: Colors.black,
-      screens: [HomeScreen(), SearchScreen(), LibraryScreen()],
+      screens: [HomeScreen(
+        token: authToken,
+      ), SearchScreen(), LibraryScreen()],
       controller: persistentTabController,
       itemAnimationProperties: ItemAnimationProperties(
           curve: Curves.easeInBack, duration: Duration(milliseconds: 350)),

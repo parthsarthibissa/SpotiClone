@@ -55,7 +55,7 @@ class DecoContainer extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Text(artist! + ' Tracks', style: TextStyle(color: Colors.white))
+          Text(artist!, style: TextStyle(color: Colors.white))
         ],
       ),
     );

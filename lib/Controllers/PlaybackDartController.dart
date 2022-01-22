@@ -2,16 +2,15 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Services/SpotifyServices.dart';
 import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
 class PlaybackDataController extends GetxController {
   var isLoading = true.obs;
-  String? trackName = ''.obs.toString();
-  String? artistName = ''.obs.toString();
-  bool? isPaused;
   PlayerState? playbackData;
 
   @override
@@ -25,15 +24,18 @@ class PlaybackDataController extends GetxController {
     try {
       isLoading(true);
       var data = await SpotifySpecificServices().getCurrentPlayingState(true);
-     
+
       if (data != null) {
         playbackData = data;
-        artistName = data.track!.artist.name;
-        trackName = data.track!.name;
-        isPaused = data.isPaused;
       }
     } catch (e) {
       print(e.toString());
+      Get.dialog(AlertDialog(
+        backgroundColor: ApplicationColors.mainBlack,
+        content: Column(
+          children: [Text('Error Connecting to Spotify')],
+        ),
+      ));
     } finally {
       isLoading(false);
     }

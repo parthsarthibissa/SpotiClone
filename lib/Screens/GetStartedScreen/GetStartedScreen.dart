@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
+import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/main.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
@@ -100,7 +101,8 @@ class GetStartedScreen extends StatelessWidget {
                       if (value == true) {
                         navigatorKey.currentState!.pushReplacement(
                             MaterialPageRoute(builder: (builder) {
-                          return HomeScreen();
+                          return MainScreen(
+                              authToken: pref.getString('authToken'));
                         }));
                       }
                     });
@@ -167,9 +169,9 @@ class GetStartedScreen extends StatelessWidget {
                                             Fluttertoast.showToast(
                                                 msg: 'Spotify not installed');
                                             LaunchApp.openApp(
-                                              openStore: true,
-                                              androidPackageName: 'com.spotify.music'
-                                            );
+                                                openStore: true,
+                                                androidPackageName:
+                                                    'com.spotify.music');
                                           }
                                         },
                                         child: Center(

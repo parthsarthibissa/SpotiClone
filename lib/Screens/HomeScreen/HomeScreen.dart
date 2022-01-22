@@ -17,6 +17,7 @@ import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/DecoContainer.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/Recents.dart';
 import 'package:spoticlone/Services/ApiInterface.dart';
+import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
 final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
@@ -86,59 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Scaffold(
               key: scaffoldState,
               bottomNavigationBar: BottomAppBar(
-                  color: Colors.transparent,
-                  elevation: 10,
-                  child: Obx(
-                    () {
-                      if (playbackDataController.isLoading.value) {
-                        return Container(
-                          height: 75,
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: ApplicationColors.mainGreen,
-                              backgroundColor: ApplicationColors.mainBlack,
-                            ),
-                          ),
-                        );
-                      }
-                      return FutureBuilder(
-                          future: SpotifySdk.getImage(
-                            imageUri: playbackDataController
-                                .playbackData!.track!.imageUri,
-                            dimension: ImageDimension.large,
-                          ),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Uint8List?>? snapshot) {
-                            if (!snapshot!.hasData) {
-                              return Container(
-                                  height: 100,
-                                  child: Center(
-                                      child: CircularProgressIndicator()));
-                            }
-                            return BottomPlayBar(
-                              sc: scaffoldState,
-                              url: snapshot.data,
-                              isPlaying: !playbackDataController
-                                  .playbackData!.isPaused,
-                              artists: playbackDataController
-                                  .playbackData!.track!.artist.name,
-                              trackName: playbackDataController
-                                  .playbackData!.track!.name,
-                            );
-                          });
-                      // return BottomPlayBar(
-                      //   sc: scaffoldState,
-                      //   url: url,
-                      //   isPlaying:
-                      //       !playbackDataController.playbackData!.isPaused,
-                      //   artists: playbackDataController
-                      //       .playbackData!.track!.artist.name,
-                      //   trackName:
-                      //       playbackDataController.playbackData!.track!.name,
-                      // );
-                    },
-                  )),
+                color: Colors.transparent,
+                elevation: 10,
+
+                child: BottomPlayBar()
+              ),
               backgroundColor: ApplicationColors.mainBlack,
               body: Column(
                 children: [

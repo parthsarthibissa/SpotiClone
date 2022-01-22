@@ -20,4 +20,22 @@ class SpotifySpecificServices {
     EasyLoading.dismiss();
      return response!;
   }
+
+
+
+  Future<PlayerState> getRecentlyPlayed(bool? showLoading) async {
+    if (showLoading == true) {
+      EasyLoading.show(
+          dismissOnTap: false,
+          indicator: CircularProgressIndicator(
+            color: ApplicationColors.mainGreen,
+            backgroundColor: ApplicationColors.mainBlack,
+          ));
+    }
+    final response = await SpotifySdk.getPlayerState();
+    EasyLoading.dismiss();
+     return response!;
+  }
+
+
 }

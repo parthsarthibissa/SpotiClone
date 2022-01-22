@@ -10,6 +10,7 @@ import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/GetStartedScreen/GetStartedScreen.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
 import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
+import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
@@ -29,8 +30,8 @@ Future<void> main() async {
     print('AUTH TOKEN ' + token.toString());
     runApp(GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainScreen(
-        authToken: token,
+      home: SplashScreen(
+        nextScreen: MainScreen(authToken: token),
       ),
       builder: EasyLoading.init(),
       theme: ThemeData(
@@ -41,7 +42,9 @@ Future<void> main() async {
   } else {
     runApp(GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GetStartedScreen(),
+      home: SplashScreen(
+        nextScreen: GetStartedScreen(),
+      ),
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

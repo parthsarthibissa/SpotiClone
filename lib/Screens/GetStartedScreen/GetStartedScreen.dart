@@ -11,9 +11,14 @@ import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/main.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
-class GetStartedScreen extends StatelessWidget {
+class GetStartedScreen extends StatefulWidget {
   const GetStartedScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -165,6 +170,8 @@ class GetStartedScreen extends StatelessWidget {
                                               androidPackageName:
                                                   'com.spotify.music',
                                             );
+                                            setState(() {});
+                                            navigatorKey.currentState!.pop();
                                           } else {
                                             Fluttertoast.showToast(
                                                 msg: 'Spotify not installed');

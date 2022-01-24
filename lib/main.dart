@@ -17,9 +17,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // ignore: prefer_const_constructors
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor:
-        ApplicationColors.mainBlack, // navigation bar color
-    statusBarColor: ApplicationColors.mainBlack, // status bar color
+    systemNavigationBarColor: Colors.black, // navigation bar color
+    statusBarColor: Colors.black, // status bar color
   ));
   String? signed;
   SharedPreferences pref = await SharedPreferences.getInstance();

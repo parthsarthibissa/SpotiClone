@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
     double _width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ApplicationColors.mainGreen,
       body: Stack(
         children: [
           AnimatedContainer(
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             curve: Curves.fastLinearToSlowEaseIn,
             width: _a ? _width : 0,
             height: _height,
-            color: ApplicationColors.mainBlack,
+            color: Colors.black,
           ),
           Center(
             child: Padding(
@@ -58,7 +58,8 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Row(
                 children: [
                   Icon(
-                    FontAwesomeIcons.spotify,size: 18,
+                    FontAwesomeIcons.spotify,
+                    size: 18,
                     color: ApplicationColors.mainGreen,
                   ),
                   SizedBox(

@@ -12,9 +12,9 @@ import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
 class BottomPlayBar extends StatefulWidget {
-  final GlobalKey<ScaffoldState>? sc;
+  final bool? opened;
 
-  BottomPlayBar({this.sc});
+  BottomPlayBar({this.opened});
 
   @override
   State<BottomPlayBar> createState() => _BottomPlayBarState();
@@ -48,12 +48,28 @@ class _BottomPlayBarState extends State<BottomPlayBar>
     return StreamBuilder(
         stream: SpotifySdk.subscribePlayerState(),
         builder: (builder, AsyncSnapshot<PlayerState> snap) {
+          if (!snap.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: ApplicationColors.mainGreen,
+                backgroundColor: Colors.black,
+              ),
+            );
+          }
           var track = snap.data!.track!;
 
           return FutureBuilder(
               future: SpotifySdk.getImage(imageUri: snap.data!.track!.imageUri),
               builder: (builder, AsyncSnapshot<Uint8List?>? snapshot) {
-                var image = snapshot!.data!;
+                if (!snapshot!.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: ApplicationColors.mainGreen,
+                      backgroundColor: Colors.black,
+                    ),
+                  );
+                }
+                var image = snapshot.data!;
                 return showFab == true
                     ? AnimatedContainer(
                         height: showFab ? 100 : 400,
@@ -155,7 +171,6 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                                         onTap: () {
                                           setState(() {
                                             showFab = false;
-                                            
                                           });
                                         },
                                         child: Icon(
@@ -226,7 +241,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                                       });
                                     },
                                     child: Icon(
-                                      Icons.close,
+                                      Icons.arrow_drop_down,
                                       color: ApplicationColors.mainGreen,
                                     ),
                                   ),
@@ -379,55 +394,12 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showQueue = !showQueue;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 2.5, vertical: 2),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 0.5,
-                                            color: ApplicationColors.mainGreen),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Queue',
-                                          style: TextStyle(
-                                              color: ApplicationColors.white,
-                                              fontSize: 12),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Icon(
-                                          showQueue == true
-                                              ? Icons.arrow_drop_up
-                                              : Icons.arrow_drop_down,
-                                          size: 18,
-                                          color: ApplicationColors.mainGreen,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
                                 Icon(
                                   Icons.shuffle,
                                   color: Colors.grey,
                                   size: 20,
                                 ),
-                                SizedBox(
-                                  width: 20,
-                                ),
+                                Spacer(),
                                 Icon(
                                   Icons.skip_previous_rounded,
                                   color: ApplicationColors.white,
@@ -457,15 +429,10 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                                 SizedBox(
                                   width: 20,
                                 ),
+                                Spacer(),
                                 Icon(
                                   Icons.repeat,
                                   color: Colors.grey,
-                                  size: 20,
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.volume_up_rounded,
-                                  color: ApplicationColors.mainGreen,
                                   size: 20,
                                 ),
                               ],

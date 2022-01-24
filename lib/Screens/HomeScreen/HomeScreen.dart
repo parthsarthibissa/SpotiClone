@@ -31,43 +31,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool? isLoading = true;
   @override
   void initState() {
     getSpotifySetup();
-    setState(() {
-      isLoading = false;
-    });
-    // TODO: implement initState
+
     super.initState();
   }
 
   List<Item> item = [];
   List<ArtistProfile> artistList = [];
   List<CategoryItem> categoryList = [];
-
-  final PlaybackDataController playbackDataController =
-      Get.put(PlaybackDataController());
-
+  AlbumModel? albumModel;
+  CategoryModel? categoryModel;
+  ArtistModel? artistModel;
   getSpotifySetup() async {
     ApiInterface().getNewAlbums(widget.token!).then((value) {
-      AlbumModel albumModel = AlbumModel.fromJson(value);
-
       setState(() {
-        item = albumModel.albums!.items!;
+        albumModel = AlbumModel.fromJson(value);
+
+        item = albumModel!.albums!.items!;
       });
     });
     ApiInterface().getCategories(widget.token!).then((value) {
-      CategoryModel categoryModel = CategoryModel.fromJson(value);
       setState(() {
-        categoryList = categoryModel.categories!.items!;
+        categoryModel = CategoryModel.fromJson(value);
+
+        categoryList = categoryModel!.categories!.items!;
       });
 
       ApiInterface().getRecommendedArtists(widget.token!).then((val) {
         print('ARTIST ' + val.toString());
-        ArtistModel artistModel = ArtistModel.fromJson(val);
         setState(() {
-          artistList = artistModel.artists!;
+          artistModel = ArtistModel.fromJson(val);
+
+          artistList = artistModel!.artists!;
         });
         print('AD ' + artistList.toString());
       });
@@ -76,222 +73,198 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? Center(
-            child: CircularProgressIndicator(
-              color: ApplicationColors.mainGreen,
-              backgroundColor: ApplicationColors.mainBlack,
-            ),
-          )
-        : SafeArea(
-            child: Scaffold(
-              key: scaffoldState,
-              bottomNavigationBar: BottomAppBar(
-                color: Colors.transparent,
-                elevation: 10,
-
-                child: BottomPlayBar()
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: BottomPlayBar(
+          opened: true,
+        ),
+        key: scaffoldState,
+        backgroundColor: Colors.black,
+        body: Column(
+          children: [
+            const CustomAppBar(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    fillColor: Colors.white,
+                    hintText: 'Search'),
               ),
-              backgroundColor: ApplicationColors.mainBlack,
-              body: Column(
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomAppBar(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.history,
-                                color: ApplicationColors.mainGreen,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Recently Played',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            width: MediaQuery.of(context).size.width,
-                            height: 150,
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: RecentlyPlayed()),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 5),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.album,
-                                color: ApplicationColors.mainGreen,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Fresh Albums',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'SEE ALL',
-                                    style: TextStyle(
-                                      color: ApplicationColors.mainGreen,
-                                      fontSize: 14,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 255,
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: item.length,
-                            itemBuilder: (builder, index) {
-                              return DecoContainer(
-                                imageUrl: item[index].images![0].url,
-                                title: item[index].name!,
-                                artist: item[index].totalTracks.toString() +
-                                    ' Tracks',
-                              );
-                            },
-                          ),
+                        Icon(
+                          Icons.album,
+                          color: ApplicationColors.mainGreen,
                         ),
                         SizedBox(
-                          height: 20,
+                          width: 7,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 5),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.category,
+                        Text(
+                          'Fresh Albums',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Spacer(),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'SEE ALL',
+                              style: TextStyle(
                                 color: ApplicationColors.mainGreen,
+                                fontSize: 14,
                               ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Categories',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'SEE ALL',
-                                    style: TextStyle(
-                                      color: ApplicationColors.mainGreen,
-                                      fontSize: 14,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 255,
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categoryList.length,
-                            itemBuilder: (builder, index) {
-                              return DecoContainer(
-                                imageUrl: categoryList[index].icons![0].url,
-                                title: categoryList[index].name!,
-                                artist: categoryList[index].id!.toUpperCase(),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 5),
-                          child: Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.artstation,
-                                color: ApplicationColors.mainGreen,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Recommended Artists',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'SEE ALL',
-                                    style: TextStyle(
-                                      color: ApplicationColors.mainGreen,
-                                      fontSize: 14,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 255,
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: artistList.length,
-                            itemBuilder: (builder, index) {
-                              return DecoContainer(
-                                imageUrl: artistList[index].images![0].url,
-                                title: artistList[index].name!,
-                                artist: artistList[index].type,
-                              );
-                            },
-                          ),
-                        ),
+                            ))
                       ],
-                    )),
-                  )
+                    ),
+                  ),
+                  Container(
+                    height: 255,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: item.length,
+                      itemBuilder: (builder, index) {
+                        return DecoContainer(
+                          model: albumModel,
+                          imageUrl: item[index].images![0].url,
+                          title: item[index].name!,
+                          artist:
+                              item[index].totalTracks.toString() + ' Tracks',
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.category,
+                          color: ApplicationColors.mainGreen,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Categories',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Spacer(),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'SEE ALL',
+                              style: TextStyle(
+                                color: ApplicationColors.mainGreen,
+                                fontSize: 14,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 255,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoryList.length,
+                      itemBuilder: (builder, index) {
+                        return DecoContainer(
+                          model: categoryModel,
+                          imageUrl: categoryList[index].icons![0].url,
+                          title: categoryList[index].name!,
+                          artist: categoryList[index].id!.toUpperCase(),
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.artstation,
+                          color: ApplicationColors.mainGreen,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Recommended Artists',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Spacer(),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'SEE ALL',
+                              style: TextStyle(
+                                color: ApplicationColors.mainGreen,
+                                fontSize: 14,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 255,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: artistList.length,
+                      itemBuilder: (builder, index) {
+                        return DecoContainer(
+                          model: artistModel,
+                          imageUrl: artistList[index].images![0].url,
+                          title: artistList[index].name!,
+                          artist: artistList[index].type,
+                        );
+                      },
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          );
+              )),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
@@ -10,24 +12,20 @@ class CustomAppBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Row(
-        children: const [
+        children: [
           Icon(
-            FontAwesomeIcons.cloudSun,
+            FontAwesomeIcons.spotify,
             color: ApplicationColors.mainGreen,
           ),
           SizedBox(
             width: 14,
           ),
           Text(
-            'Good Afternoon',
+            'SpotiClone',
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white),
           ),
           Spacer(),
-          Icon(Icons.notifications, color: ApplicationColors.mainGreen),
-          SizedBox(
-            width: 10,
-          ),
           Icon(Icons.settings, color: ApplicationColors.mainGreen),
         ],
       ),

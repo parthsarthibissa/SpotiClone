@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_state_manager/src/simple/list_notifier.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/GetStartedScreen/GetStartedScreen.dart';
@@ -13,13 +14,20 @@ import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+final appData = GetStorage();
+
 Future<void> main() async {
+  await GetStorage.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   // ignore: prefer_const_constructors
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.black, // navigation bar color
     statusBarColor: Colors.black, // status bar color
   ));
+  appData.writeIfNull('darkmode', false);
+
   String? signed;
   SharedPreferences pref = await SharedPreferences.getInstance();
   signed = pref.getString('authToken');
@@ -33,9 +41,6 @@ Future<void> main() async {
         nextScreen: MainScreen(authToken: token),
       ),
       builder: EasyLoading.init(),
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
       navigatorKey: navigatorKey,
     ));
   } else {
@@ -43,9 +48,6 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(
         nextScreen: GetStartedScreen(),
-      ),
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       builder: EasyLoading.init(),
       navigatorKey: navigatorKey,

@@ -37,7 +37,9 @@ dependencies:
   fluttertoast: ^8.0.8
   font_awesome_flutter: ^9.2.0
   get: ^4.6.1
+  get_storage: ^2.0.3
   http: ^0.13.4
+  particles_flutter: ^0.1.4
   persistent_bottom_nav_bar: ^4.0.2
   shared_preferences: ^2.0.12
   sliding_up_panel: ^2.0.0+1

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
+import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spotify_sdk/models/user_status.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
@@ -14,6 +15,7 @@ class SettingsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
+        bottomNavigationBar: BottomPlayBar(),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           // margin: EdgeInsets.symmetric(horizontal: 24),

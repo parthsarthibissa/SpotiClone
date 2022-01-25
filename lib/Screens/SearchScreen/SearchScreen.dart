@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Models/SearchResultModel.dart';
+import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spoticlone/Screens/Elements/SearchContainer/SearchContainer.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/DecoContainer.dart';
 import 'package:spoticlone/Services/ApiInterface.dart';
@@ -27,6 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: BottomPlayBar(),
       body: Column(
         children: [
           Container(

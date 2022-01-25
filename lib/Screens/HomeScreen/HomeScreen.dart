@@ -75,8 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: BottomPlayBar(
-          opened: true,
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomPlayBar(
+              opened: true,
+            ),
+          ],
         ),
         key: scaffoldState,
         backgroundColor: Colors.black,

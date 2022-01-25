@@ -29,9 +29,7 @@ class ApiInterface {
   Future<Map<String, dynamic>> getSearchedItem(
       String token, String query) async {
     return apiService.getData(
-        '/search?query=' +
-            query +
-            '&type=album,track,show,episode&include_external=audio',
+        '/search?query=' + query + '&type=track&include_external=audio',
         true,
         token);
   }

@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/LibraryScreen/LibraryScreen.dart';
+import 'package:spoticlone/Screens/SearchScreen/SearchScreen.dart';
 import 'package:spoticlone/Screens/SettingsScreen/SettingsScreen.dart';
 import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 import 'package:spoticlone/main.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  final String? token;
+
+  const CustomAppBar({Key? key, required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +33,25 @@ class CustomAppBar extends StatelessWidget {
                 fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white),
           ),
           Spacer(),
+          Hero(
+            tag: 'Search',
+            child: IconButton(
+              icon: Icon(FontAwesomeIcons.search,
+                  color: ApplicationColors.mainGreen),
+              onPressed: () {
+                navigatorKey.currentState!
+                    .push(SlideTransitionAnimation(SearchScreen( token: token,)));
+              },
+            ),
+          ),
           IconButton(
             icon: Icon(FontAwesomeIcons.solidPlayCircle,
                 color: ApplicationColors.mainGreen),
             onPressed: () {
               navigatorKey.currentState!
-                  .push(SlideTransitionAnimation(LibraryScreen()));
+                  .push(SlideTransitionAnimation(LibraryScreen(
+                token: token,
+              )));
             },
           ),
           IconButton(

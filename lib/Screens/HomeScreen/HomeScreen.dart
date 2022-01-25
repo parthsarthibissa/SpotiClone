@@ -1,24 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
-import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
-import 'package:spoticlone/Controllers/PlaybackDartController.dart';
 import 'package:spoticlone/Models/AlbumModel.dart';
 import 'package:spoticlone/Models/ArtistModel.dart';
 import 'package:spoticlone/Models/CategoryModel.dart';
 import 'package:spoticlone/Screens/Elements/AppBar/CustomAppBar.dart';
 import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/DecoContainer.dart';
-import 'package:spoticlone/Screens/HomeScreen/widgets/Recents.dart';
 import 'package:spoticlone/Services/ApiInterface.dart';
-import 'package:spotify_sdk/models/player_state.dart';
-import 'package:spotify_sdk/spotify_sdk.dart';
 
 final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
 
@@ -38,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  final TextEditingController textEditingController = TextEditingController();
   List<Item> item = [];
   List<ArtistProfile> artistList = [];
   List<CategoryItem> categoryList = [];
@@ -87,21 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         body: Column(
           children: [
-            const CustomAppBar(),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    fillColor: Colors.white,
-                    hintText: 'Search'),
-              ),
-            ),
+            CustomAppBar(token: widget.token),
+            
             Expanded(
               child: SingleChildScrollView(
                   child: Column(

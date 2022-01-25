@@ -17,4 +17,22 @@ class ApiInterface {
   Future<Map<String, dynamic>> getRecommendedArtists(String token) async {
     return apiService.getData('/artists?ids=' + ids!, true, token);
   }
+
+  Future<Map<String, dynamic>> getMyTopTracks(String token) async {
+    return apiService.getData('/me/top/tracks', true, token);
+  }
+
+  Future<Map<String, dynamic>> getMyTopArtists(String token) async {
+    return apiService.getData('/me/top/artists', true, token);
+  }
+
+  Future<Map<String, dynamic>> getSearchedItem(
+      String token, String query) async {
+    return apiService.getData(
+        '/search?query=' +
+            query +
+            '&type=album,track,show,episode&include_external=audio',
+        true,
+        token);
+  }
 }

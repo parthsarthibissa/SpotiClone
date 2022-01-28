@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -24,23 +24,36 @@ class DecoContainer extends StatelessWidget {
         child: Container(
           width: 200,
           decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black,
             border: Border.all(
-                width: 0.2, color: ApplicationColors.white.withOpacity(0.3)),
+                color: ApplicationColors.mainGreen.withOpacity(0.5),
+                width: 0.5),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(-4.5, -6),
+                  blurRadius: 3,
+                  blurStyle: BlurStyle.inner,
+                  spreadRadius: 2,
+                  color: ApplicationColors.mainGreen)
+            ],
           ),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Align(
                 alignment: Alignment.center,
                 child: CachedNetworkImage(
                   imageUrl: imageUrl!,
                   imageBuilder: (context, imageProvider) => Container(
-                    height: 130,
+                    height: 155,
                     width: 155,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: ApplicationColors.mainGreen.withOpacity(0.5),
+                            width: 0),
                         image: DecorationImage(
                             fit: BoxFit.cover, image: imageProvider)),
                   ),
@@ -63,12 +76,19 @@ class DecoContainer extends StatelessWidget {
               Text(
                 title!,
                 maxLines: 1,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
               ),
               SizedBox(
                 height: 5,
               ),
-              Text(artist!, style: TextStyle(color: Colors.white))
+              Text(artist!,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300))
             ],
           ),
         ),

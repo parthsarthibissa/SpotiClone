@@ -42,6 +42,7 @@ dependencies:
   particles_flutter: ^0.1.4
   persistent_bottom_nav_bar: ^4.0.2
   shared_preferences: ^2.0.12
+  show_up_animation: ^2.0.0
   sliding_up_panel: ^2.0.0+1
   spotify_sdk: ^2.2.0
 

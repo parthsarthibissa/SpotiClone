@@ -28,7 +28,7 @@ class CustomAppBar extends StatelessWidget {
             width: 14,
           ),
           Text(
-            'SpotiClone',
+            'Spotify',
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white),
           ),
@@ -40,7 +40,9 @@ class CustomAppBar extends StatelessWidget {
                   color: ApplicationColors.mainGreen),
               onPressed: () {
                 navigatorKey.currentState!
-                    .push(SlideTransitionAnimation(SearchScreen( token: token,)));
+                    .push(SlideTransitionAnimation(SearchScreen(
+                  token: token,
+                )));
               },
             ),
           ),

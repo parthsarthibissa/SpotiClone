@@ -29,13 +29,13 @@ class PlaybackDataController extends GetxController {
   void getPlaybackState() async {
     try {
       isLoading(true);
-      PlayerState data =
-          await SpotifySpecificServices().getCurrentPlayingState(true);
-
-      if (data != null) {
-        playbackData = data;
-        trackName = playbackData!.track!.name.obs;
-      }
+      SpotifySdk.subscribePlayerState().listen((event) {
+        PlayerState data = event;
+        if (data != null) {
+          playbackData = data;
+          trackName = playbackData!.track!.name.obs;
+        }
+      });
     } catch (e) {
       print(e.toString());
       Get.dialog(AlertDialog(

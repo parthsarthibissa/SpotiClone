@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/GetStartedScreen/GetStartedScreen.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
-import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -23,8 +22,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // ignore: prefer_const_constructors
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.black, // navigation bar color
-    statusBarColor: Colors.black, // status bar color
+    statusBarBrightness: Brightness.light,
+    systemNavigationBarColor: Colors.transparent, // navigation bar color
+    statusBarColor: Colors.transparent, // status bar color
   ));
   appData.writeIfNull('darkmode', false);
 
@@ -38,7 +38,7 @@ Future<void> main() async {
     runApp(GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(
-        nextScreen: MainScreen(authToken: token),
+        nextScreen: HomeScreen(token: token),
       ),
       builder: EasyLoading.init(),
       navigatorKey: navigatorKey,

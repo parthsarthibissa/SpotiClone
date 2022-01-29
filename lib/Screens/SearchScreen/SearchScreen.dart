@@ -25,12 +25,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
       bottomNavigationBar: BottomPlayBar(),
       body: Column(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Row(
@@ -138,6 +140,6 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-    ));
+    );
   }
 }

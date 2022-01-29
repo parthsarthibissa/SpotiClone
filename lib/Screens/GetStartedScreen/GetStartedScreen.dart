@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Screens/HomeScreen/HomeScreen.dart';
-import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 import 'package:spoticlone/main.dart';
 import 'package:spotify_sdk/models/connection_status.dart';
@@ -117,8 +116,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                             print(pref.getString('authToken'));
                             if (value == true) {
                               navigatorKey.currentState!.pushReplacement(
-                                  SlideTransitionAnimation(MainScreen(
-                                      authToken: pref.getString('authToken'))));
+                                  SlideTransitionAnimation(HomeScreen(
+                                      token: pref.getString('authToken'))));
                             }
                           });
                         } catch (e) {

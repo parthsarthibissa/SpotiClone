@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unnecessary_new
 
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,6 @@ import 'package:spoticlone/Screens/Elements/AppBar/CustomAppBar.dart';
 import 'package:spoticlone/Screens/Elements/BottomPlayBar/BottomPlayBar.dart';
 import 'package:spoticlone/Screens/GetStartedScreen/GetStartedScreen.dart';
 import 'package:spoticlone/Screens/HomeScreen/widgets/DecoContainer.dart';
-import 'package:spoticlone/Screens/MainScreen/MainScreen.dart';
 import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
 import 'package:spoticlone/Services/ApiInterface.dart';
 
@@ -170,168 +169,223 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  final PageController? pageController1 = PageController(viewportFraction: 0.7);
+  final PageController? pageController2 = PageController(viewportFraction: 0.7);
+  final PageController? pageController3 = PageController(viewportFraction: 0.7);
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomPlayBar(
-              opened: true,
-            ),
-          ],
-        ),
-        key: scaffoldState,
-        backgroundColor: Colors.black,
-        body: Column(
-          children: [
-            CustomAppBar(token: widget.token),
-            Expanded(
-              child: SingleChildScrollView(
-                  child: ShowUpAnimation(
-                curve: Curves.bounceInOut,
-                animationDuration: Duration(milliseconds: 750),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.album,
-                            color: ApplicationColors.mainGreen,
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Text(
-                            'Fresh Albums',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+    return Scaffold(
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BottomPlayBar(
+            opened: true,
+          ),
+        ],
+      ),
+      key: scaffoldState,
+      backgroundColor: Colors.black,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          CustomAppBar(token: widget.token),
+          Expanded(
+            child: SingleChildScrollView(
+                child: ShowUpAnimation(
+              curve: Curves.bounceInOut,
+              animationDuration: Duration(milliseconds: 750),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.album,
+                          color: ApplicationColors.mainGreen,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Fresh Albums',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: 325,
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: item.length,
-                        itemBuilder: (builder, index) {
-                          return DecoContainer(
-                            model: albumModel,
-                            imageUrl: item[index].images![0].url,
-                            title: item[index].name!,
-                            artist:
-                                item[index].totalTracks.toString() + ' Tracks',
-                          );
-                        },
-                      ),
+                  ),
+                  Container(
+                    height: 325,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    child: PageView.builder(
+                      controller: pageController1,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: item.length,
+                      itemBuilder: (builder, index) {
+                        return builder1(index);
+                      },
                     ),
-                    SizedBox(
-                      height: 20,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.category,
+                          color: ApplicationColors.mainGreen,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Categories',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.category,
-                            color: ApplicationColors.mainGreen,
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Text(
-                            'Categories',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    height: 325,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    child: PageView.builder(
+                      controller: pageController2,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoryList.length,
+                      itemBuilder: (builder, index) {
+                        return builder2(index);
+                      },
                     ),
-                    Container(
-                      height: 325,
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: categoryList.length,
-                        itemBuilder: (builder, index) {
-                          return DecoContainer(
-                            model: categoryModel,
-                            imageUrl: categoryList[index].icons![0].url,
-                            title: categoryList[index].name!,
-                            artist: '',
-                          );
-                        },
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.artstation,
+                          color: ApplicationColors.mainGreen,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Recommended Artists',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.artstation,
-                            color: ApplicationColors.mainGreen,
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Text(
-                            'Recommended Artists',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    height: 325,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    child: PageView.builder(
+                      controller: pageController3,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: artistList.length,
+                      itemBuilder: (builder, index) {
+                        return builder3(index);
+                      },
                     ),
-                    Container(
-                      height: 325,
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: artistList.length,
-                        itemBuilder: (builder, index) {
-                          return DecoContainer(
-                            model: artistModel,
-                            imageUrl: artistList[index].images![0].url,
-                            title: artistList[index].name!,
-                            artist: artistList[index].type,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-            )
-          ],
-        ),
+                  ),
+                ],
+              ),
+            )),
+          )
+        ],
       ),
     );
+  }
+
+  builder1(int index) {
+    return AnimatedBuilder(
+        animation: pageController1!,
+        builder: (builder, child) {
+          double value = 1.0;
+          if (pageController1!.position.haveDimensions) {
+            value = pageController1!.page! - index;
+            value = (1 - (value.abs() * 0.30)).clamp(0.75, 1.0);
+          }
+          return Center(
+              child: SizedBox(
+                  height: Curves.easeOut.transform(value) * 300,
+                  width: 230,
+                  child: child));
+        },
+        child: DecoContainer(
+          model: albumModel,
+          imageUrl: item[index].images![0].url,
+          title: item[index].name!,
+          artist: item[index].totalTracks.toString() + ' Tracks',
+        ));
+  }
+
+  builder2(int index) {
+    return AnimatedBuilder(
+        animation: pageController2!,
+        builder: (builder, child) {
+          double value = 1.0;
+          if (pageController2!.position.haveDimensions) {
+            value = pageController2!.page! - index;
+            value = (1 - (value.abs() * 0.30)).clamp(0.75, 1.0);
+          }
+          return new Center(
+              child: new SizedBox(
+                  height: Curves.easeOut.transform(value) * 300,
+                  width: 230,
+                  child: child));
+        },
+        child: DecoContainer(
+          model: categoryModel,
+          imageUrl: categoryList[index].icons![0].url,
+          title: categoryList[index].name!,
+          artist: '',
+        ));
+  }
+
+  builder3(int index) {
+    return AnimatedBuilder(
+        animation: pageController3!,
+        builder: (builder, child) {
+          double value = 1.0;
+          if (pageController3!.position.haveDimensions) {
+            value = pageController3!.page! - index;
+            value = (1 - (value.abs() * 0.30)).clamp(0.75, 1.0);
+          }
+          return new Center(
+              child: new SizedBox(
+                  height: Curves.easeOut.transform(value) * 300,
+                  width: 230,
+                  child: child));
+        },
+        child: DecoContainer(
+          model: artistModel,
+          imageUrl: artistList[index].images![0].url,
+          title: artistList[index].name!,
+          artist: artistList[index].type,
+        ));
   }
 }

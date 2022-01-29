@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:spoticlone/Constants/AppColors.dart';
 import 'package:spoticlone/Controllers/PlaybackDartController.dart';
+import 'package:spoticlone/Screens/PlayerScreen/PlayerScreen.dart';
+import 'package:spoticlone/Screens/SplashScreen/SplashScreen.dart';
+import 'package:spoticlone/main.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
 class BottomPlayBar extends StatefulWidget {
@@ -52,12 +55,7 @@ class _BottomPlayBarState extends State<BottomPlayBar>
       curve: Curves.easeInOutCirc,
       child: Stack(
         children: [
-          Container(
-            height: 55,
-            width: MediaQuery.of(context).size.width,
-          ),
           Obx(() {
-            playerState.update();
             if (playerState.isLoading == true.obs) {
               return Center(
                 child: CircularProgressIndicator(
@@ -142,63 +140,87 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                                     ),
                                   ),
                                   Spacer(),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          SpotifySdk.skipPrevious();
+                                        },
+                                        iconSize: 25,
+                                        icon: Icon(
                                           Icons.skip_previous_rounded,
                                           color: ApplicationColors.white,
-                                          size: 30,
                                         ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        InkWell(
+                                      ),
+                                      InkWell(
                                           onTap: () async {},
                                           child: playerState
                                                       .playbackData!.isPaused ==
                                                   false
-                                              ? Icon(
-                                                  Icons.pause,
-                                                  color:
-                                                      ApplicationColors.white,
-                                                )
-                                              : Icon(
-                                                  Icons.play_arrow_rounded,
-                                                  color:
-                                                      ApplicationColors.white,
-                                                  size: 30,
-                                                ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.skip_next_rounded,
-                                          color: ApplicationColors.white,
-                                          size: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
+                                              ? Container(
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.black,
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color:
+                                                              ApplicationColors
+                                                                  .white)),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      SpotifySdk.pause();
+                                                    },
+                                                    iconSize: 25,
+                                                    icon: Icon(
+                                                      Icons.pause,
+                                                      color: ApplicationColors
+                                                          .white,
+                                                    ),
+                                                  ))
+                                              : Container(
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.black,
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color:
+                                                              ApplicationColors
+                                                                  .white)),
+                                                  child: IconButton(
+                                                    iconSize: 25,
+                                                    onPressed: () {
+                                                      SpotifySdk.resume();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.play_arrow_rounded,
+                                                      color: ApplicationColors
+                                                          .white,
+                                                    ),
+                                                  ),
+                                                )),
+                                      IconButton(
+                                          iconSize: 25,
+                                          onPressed: () {
+                                            SpotifySdk.skipNext();
+                                          },
+                                          icon: Icon(
+                                            Icons.skip_next_rounded,
+                                            color: ApplicationColors.white,
+                                          )),
+                                      IconButton(
+                                          iconSize: 25,
+                                          onPressed: () {
                                             setState(() {
                                               showFab = false;
                                             });
                                           },
-                                          child: Icon(
+                                          icon: Icon(
                                             Icons.arrow_drop_up_outlined,
-                                            color: ApplicationColors.white,
-                                            size: 30,
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                            color: ApplicationColors.mainGreen,
+                                          )),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -218,470 +240,341 @@ class _BottomPlayBarState extends State<BottomPlayBar>
                               image: DecorationImage(
                                   fit: BoxFit.cover,
                                   colorFilter: ColorFilter.mode(
-                                      showQueue
-                                          ? ApplicationColors.mainBlack
-                                              .withOpacity(0.8)
-                                          : ApplicationColors.mainBlack
-                                              .withOpacity(0.5),
+                                      ApplicationColors.mainBlack
+                                          .withOpacity(0.85),
                                       BlendMode.darken),
                                   image: MemoryImage(image))),
                           curve: Curves.easeIn,
                           duration: Duration(milliseconds: 350),
-                          child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 12),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.spotify,
-                                        color: ApplicationColors.mainGreen,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'Now Playing',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: ApplicationColors.white),
-                                      ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            showFab = true;
-                                            showQueue = false;
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
+                          child: SingleChildScrollView(
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 12),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.spotify,
                                           color: ApplicationColors.mainGreen,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Hero(
-                                  tag: 'photo',
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: InkWell(
-                                      onTap: () {
-                                        animationController!.forward();
-                                      },
-                                      child: Container(
-                                        height: 100,
-                                        width: 100,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 30),
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                width: 0.5,
-                                                color: ApplicationColors
-                                                    .mainGreen),
-                                            image: DecorationImage(
-                                                image: MemoryImage(image))),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                Hero(
-                                  tag: 'trackName',
-                                  child: Text(
-                                    playerState.playbackData!.track!.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: ApplicationColors.white),
-                                  ),
-                                ),
-
-                                // SizedBox(
-                                //   width: 40,
-                                // ),
-                                // Container(
-                                //   height: 150,
-                                //   width: 200,
-                                //   padding:
-                                //       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                //   margin: EdgeInsets.symmetric(horizontal: 5),
-                                //   child: SingleChildScrollView(
-                                //     child: Column(
-                                //       crossAxisAlignment: CrossAxisAlignment.end,
-                                //       children: [
-                                //         SizedBox(
-                                //           height: 20,
-                                //         ),
-                                //         Text(
-                                //           'ਦੱਸ ਪੁੱਤ ਤੇਰਾ head down ਕਾਸਤੋ ਚੰਗਾ ਭਲਾ ਹੱਸਦਾ ਸੀ ਮੌਨ ਕਾਸਤੋ ਆ ਜਿਹੜੇ ਦਰਵਾਜੇ ਵਿਚ board ਚੱਕੀ ਖੜੇ ਆ ਮੈਂ ਚੰਗੀ ਤਰਹ ਜਾਂਦਾ ਆ ਕੌਣ ਕਾਸਤੋ ਕੁਛ ਐਥੇ ਚਾਂਦੀ ਚਮਕੌਂਨਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਤੈਨੂ ਫਡ ਥੱਲੇ ਲੌਣਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਕ਼ ਨੇ ਆਏ ਐਥੇ ਭੁੱਖੇ fame ਦੇਨਾਮ ਲੈਕੇ ਤੇਰਾ ਅੱਗੇ ਔਣੇ ਚੌਂਦੇ ਨੇ ਮੁਸੀਬਤ ਤਾਂ ਮਰਦਾ ਤੇ ਪੈਂਦੀ ਰਿਹੰਦੀ ਏ ਦਬੀ ਨਾ ਤੂ ਦੁਨਿਯਾ ਸਵਾਦ ਲੈਂਦੀ ਏ',
-                                //           style: TextStyle(
-                                //               color: Colors.white.withOpacity(0.85),
-                                //               fontSize: 18,
-                                //               fontWeight: FontWeight.w600),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-
-                                Hero(
-                                  tag: 'artistName',
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        playerState
-                                            .playbackData!.track!.artist.name!,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w300,
-                                            color: ApplicationColors.white),
-                                      ),
-                                      Icon(
-                                        Icons.verified,
-                                        size: 15,
-                                        color: Colors.blue,
-                                      ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          if (liked == true) {
-                                            animationController!.forward();
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Now Playing',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color: ApplicationColors.white),
+                                        ),
+                                        Spacer(),
+                                        InkWell(
+                                          onTap: () {
                                             setState(() {
-                                              liked = false;
+                                              showFab = true;
+                                              showQueue = false;
                                             });
-                                          } else {
-                                            animationController!.reverse();
-                                            setState(() {
-                                              liked = true;
-                                            });
-                                          }
-                                        },
-                                        child: liked == false
-                                            ? Icon(
-                                                FontAwesomeIcons.solidHeart,
-                                                size: 22,
-                                                color: animation!.value,
-                                              )
-                                            : Icon(
-                                                FontAwesomeIcons.heart,
-                                                size: 22,
-                                                color: animation!.value,
-                                              ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Hero(
-                                  tag: 'progress',
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: SizedBox(
-                                      height: 3,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            color: ApplicationColors.white,
-                                          ),
-                                          Container(
-                                            width: 150,
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
                                             color: ApplicationColors.mainGreen,
                                           ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Hero(
+                                    tag: 'photo',
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: InkWell(
+                                        onTap: () {
+                                          animationController!.forward();
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 30),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  width: 0.5,
+                                                  color: ApplicationColors
+                                                      .mainGreen),
+                                              image: DecorationImage(
+                                                  image: MemoryImage(image))),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 6.5,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    '4:28',
-                                    style: TextStyle(
-                                        color: ApplicationColors.white
-                                            .withOpacity(0.5),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
+
+                                  Hero(
+                                    tag: 'trackName',
+                                    child: Text(
+                                      playerState.playbackData!.track!.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: ApplicationColors.white),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Hero(
-                                  tag: 'control',
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.shuffle,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
-                                      Spacer(),
-                                      Icon(
-                                        Icons.skip_previous_rounded,
-                                        color: ApplicationColors.white,
-                                        size: 30,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      playerState.playbackData!.isPaused == true
-                                          ? Icon(
-                                              Icons.pause,
+
+                                  // SizedBox(
+                                  //   width: 40,
+                                  // ),
+                                  // Container(
+                                  //   height: 150,
+                                  //   width: 200,
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  //   margin: EdgeInsets.symmetric(horizontal: 5),
+                                  //   child: SingleChildScrollView(
+                                  //     child: Column(
+                                  //       crossAxisAlignment: CrossAxisAlignment.end,
+                                  //       children: [
+                                  //         SizedBox(
+                                  //           height: 20,
+                                  //         ),
+                                  //         Text(
+                                  //           'ਦੱਸ ਪੁੱਤ ਤੇਰਾ head down ਕਾਸਤੋ ਚੰਗਾ ਭਲਾ ਹੱਸਦਾ ਸੀ ਮੌਨ ਕਾਸਤੋ ਆ ਜਿਹੜੇ ਦਰਵਾਜੇ ਵਿਚ board ਚੱਕੀ ਖੜੇ ਆ ਮੈਂ ਚੰਗੀ ਤਰਹ ਜਾਂਦਾ ਆ ਕੌਣ ਕਾਸਤੋ ਕੁਛ ਐਥੇ ਚਾਂਦੀ ਚਮਕੌਂਨਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਤੈਨੂ ਫਡ ਥੱਲੇ ਲੌਣਾ ਚੌਂਦੇ ਨੇ ਕੁਛ ਕ਼ ਨੇ ਆਏ ਐਥੇ ਭੁੱਖੇ fame ਦੇਨਾਮ ਲੈਕੇ ਤੇਰਾ ਅੱਗੇ ਔਣੇ ਚੌਂਦੇ ਨੇ ਮੁਸੀਬਤ ਤਾਂ ਮਰਦਾ ਤੇ ਪੈਂਦੀ ਰਿਹੰਦੀ ਏ ਦਬੀ ਨਾ ਤੂ ਦੁਨਿਯਾ ਸਵਾਦ ਲੈਂਦੀ ਏ',
+                                  //           style: TextStyle(
+                                  //               color: Colors.white.withOpacity(0.85),
+                                  //               fontSize: 18,
+                                  //               fontWeight: FontWeight.w600),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+
+                                  Hero(
+                                    tag: 'artistName',
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          playerState.playbackData!.track!
+                                              .artist.name!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w300,
+                                              color: ApplicationColors.white),
+                                        ),
+                                        Icon(
+                                          Icons.verified,
+                                          size: 15,
+                                          color: Colors.blue,
+                                        ),
+                                        Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            if (liked == true) {
+                                              animationController!.forward();
+                                              setState(() {
+                                                liked = false;
+                                              });
+                                            } else {
+                                              animationController!.reverse();
+                                              setState(() {
+                                                liked = true;
+                                              });
+                                            }
+                                          },
+                                          child: liked == false
+                                              ? Icon(
+                                                  FontAwesomeIcons.solidHeart,
+                                                  size: 22,
+                                                  color: animation!.value,
+                                                )
+                                              : Icon(
+                                                  FontAwesomeIcons.heart,
+                                                  size: 22,
+                                                  color: animation!.value,
+                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Hero(
+                                    tag: 'progress',
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: SizedBox(
+                                        height: 3,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Stack(
+                                          children: [
+                                            Container(
                                               color: ApplicationColors.white,
-                                            )
-                                          : Icon(
-                                              Icons.play_arrow_rounded,
-                                              color: ApplicationColors.white,
-                                              size: 30,
                                             ),
-                                      SizedBox(
-                                        width: 10,
+                                            Container(
+                                              width: 150,
+                                              color:
+                                                  ApplicationColors.mainGreen,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Icon(
-                                        Icons.skip_next_rounded,
-                                        color: ApplicationColors.white,
-                                        size: 30,
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Spacer(),
-                                      Icon(
-                                        Icons.repeat,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    width: 200,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(18),
-                                        color: ApplicationColors.mainGreen),
-                                    child: Material(
-                                      color: ApplicationColors.mainGreen,
-                                      borderRadius: BorderRadius.circular(18),
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            showQueue = !showQueue;
-                                          });
-                                        },
-                                        borderRadius: BorderRadius.circular(18),
-                                        child: Center(
-                                          child: Text(
-                                            'Open Queue',
-                                            style: TextStyle(
+                                  SizedBox(
+                                    height: 6.5,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      '4:28',
+                                      style: TextStyle(
+                                          color: ApplicationColors.white
+                                              .withOpacity(0.5),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Hero(
+                                    tag: 'control',
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        IconButton(
+                                            iconSize: 25,
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.repeat,
                                               color: ApplicationColors.white,
+                                            )),
+                                        IconButton(
+                                          onPressed: () {
+                                            SpotifySdk.skipPrevious();
+                                          },
+                                          iconSize: 25,
+                                          icon: Icon(
+                                            Icons.skip_previous_rounded,
+                                            color: ApplicationColors.white,
+                                          ),
+                                        ),
+                                        InkWell(
+                                            onTap: () async {},
+                                            child: playerState.playbackData!
+                                                        .isPaused ==
+                                                    false
+                                                ? Container(
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.black,
+                                                        border: Border.all(
+                                                            width: 0.5,
+                                                            color:
+                                                                ApplicationColors
+                                                                    .white)),
+                                                    child: IconButton(
+                                                      onPressed: () {
+                                                        SpotifySdk.pause();
+                                                      },
+                                                      iconSize: 25,
+                                                      icon: Icon(
+                                                        Icons.pause,
+                                                        color: ApplicationColors
+                                                            .white,
+                                                      ),
+                                                    ))
+                                                : Container(
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.black,
+                                                        border: Border.all(
+                                                            width: 0.5,
+                                                            color:
+                                                                ApplicationColors
+                                                                    .white)),
+                                                    child: IconButton(
+                                                      iconSize: 25,
+                                                      onPressed: () {
+                                                        SpotifySdk.resume();
+                                                      },
+                                                      icon: Icon(
+                                                        Icons
+                                                            .play_arrow_rounded,
+                                                        color: ApplicationColors
+                                                            .white,
+                                                      ),
+                                                    ),
+                                                  )),
+                                        IconButton(
+                                            iconSize: 25,
+                                            onPressed: () {
+                                              SpotifySdk.skipNext();
+                                            },
+                                            icon: Icon(
+                                              Icons.skip_next_rounded,
+                                              color: ApplicationColors.white,
+                                            )),
+                                        IconButton(
+                                            iconSize: 25,
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.shuffle,
+                                              color: ApplicationColors.white,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      width: 200,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          color: ApplicationColors.mainGreen),
+                                      child: Material(
+                                        color: ApplicationColors.mainGreen,
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: InkWell(
+                                          onTap: () {
+                                            navigatorKey.currentState!.push(
+                                                SlideTransitionAnimation(
+                                                    PlayerScreen(
+                                                        image: image,
+                                                        playerState: playerState
+                                                            .playbackData)));
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          child: Center(
+                                            child: Text(
+                                              'Open Player',
+                                              style: TextStyle(
+                                                color: ApplicationColors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Visibility(
-                                    visible: showQueue,
-                                    child: Expanded(
-                                        child: ListView(
-                                            shrinkWrap: true,
-                                            children: [
-                                          ListTile(
-                                            leading: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image:
-                                                          MemoryImage(image))),
-                                            ),
-                                            title: Text(
-                                              'Moosetape',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            subtitle: Text(
-                                              'Sidhu Moose Wala',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.play_arrow_rounded,
-                                                  color: ApplicationColors
-                                                      .mainGreen,
-                                                ),
-                                                SizedBox(
-                                                  width: 7.5,
-                                                ),
-                                                Icon(
-                                                  Icons.close,
-                                                  color: ApplicationColors.white
-                                                      .withOpacity(0.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ListTile(
-                                            leading: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image:
-                                                          MemoryImage(image))),
-                                            ),
-                                            title: Text(
-                                              'Moosetape',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            subtitle: Text(
-                                              'Sidhu Moose Wala',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.play_arrow_rounded,
-                                                  color: ApplicationColors
-                                                      .mainGreen,
-                                                ),
-                                                SizedBox(
-                                                  width: 7.5,
-                                                ),
-                                                Icon(
-                                                  Icons.close,
-                                                  color: ApplicationColors.white
-                                                      .withOpacity(0.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ListTile(
-                                            leading: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image:
-                                                          MemoryImage(image))),
-                                            ),
-                                            title: Text(
-                                              'Moosetape',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            subtitle: Text(
-                                              'Sidhu Moose Wala',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.play_arrow_rounded,
-                                                  color: ApplicationColors
-                                                      .mainGreen,
-                                                ),
-                                                SizedBox(
-                                                  width: 7.5,
-                                                ),
-                                                Icon(
-                                                  Icons.close,
-                                                  color: ApplicationColors.white
-                                                      .withOpacity(0.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ListTile(
-                                            leading: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image:
-                                                          MemoryImage(image))),
-                                            ),
-                                            title: Text(
-                                              'Moosetape',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            subtitle: Text(
-                                              'Sidhu Moose Wala',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.play_arrow_rounded,
-                                                  color: ApplicationColors
-                                                      .mainGreen,
-                                                ),
-                                                SizedBox(
-                                                  width: 7.5,
-                                                ),
-                                                Icon(
-                                                  Icons.close,
-                                                  color: ApplicationColors.white
-                                                      .withOpacity(0.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ])))
-                              ]),
+                                ]),
+                          ),
                         );
                 });
           }),

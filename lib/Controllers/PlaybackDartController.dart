@@ -31,9 +31,10 @@ class PlaybackDataController extends GetxController {
       isLoading(true);
       SpotifySdk.subscribePlayerState().listen((event) {
         PlayerState data = event;
-        if (data != null) {
+        if (!data.isBlank!) {
           playbackData = data;
           trackName = playbackData!.track!.name.obs;
+          isLoading(false);
         }
       });
     } catch (e) {
@@ -76,8 +77,6 @@ class PlaybackDataController extends GetxController {
           ],
         ),
       ));
-    } finally {
-      isLoading(false);
     }
   }
 }
